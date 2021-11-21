@@ -28,6 +28,7 @@ function defineReactive(data, key) {
       return val
     },
     set(newVal) {
+      debugger
       val = newVal
       dep.notify()
     }
