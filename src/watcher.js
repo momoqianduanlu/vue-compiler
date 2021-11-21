@@ -3,8 +3,10 @@ import { Dep, pushTarget, popTarget } from './dep'
 export class Watcher {
   // 在这getter可以理解为渲染函数
   constructor(getter, options = {}) {
-    const { computed } = options
+    const { computed, watch, callback } = options
     this.getter = getter
+    this.watch = watch
+    this.callback = callback
     this.value = undefined
 
     if (computed) {
@@ -28,6 +30,15 @@ export class Watcher {
   }
   
   update() {
-    this.get()
+    if (this.computed) {
+      this.get()
+      this.dep.notify()
+    } else if (this.watch) {
+      const oldValue = this.value
+      this.get()
+      this.callback(oldValue, this.value)
+    } else {
+      this.get()
+    }
   }
 }

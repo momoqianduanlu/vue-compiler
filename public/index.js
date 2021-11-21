@@ -1,6 +1,7 @@
 import { Watcher } from '../src/watcher'
 import { reactive } from '../src/reactive'
 import { computed } from '../src/computed'
+import { watch } from '../src/watch'
 
 const data = reactive({
   name: 'sabo',
@@ -24,5 +25,13 @@ new Watcher(() => {
     computed: 1 + number 是 ${numberPlusOne.value}
   `
 })
+
+watch(
+  () => data.number,
+  (old, newVal) => {
+    console.log('old: ', old)
+    console.log('newVal: ', newVal)
+  }
+)
 
 window.data = data
